@@ -72,6 +72,40 @@
   }, {threshold:0.4});
   document.querySelectorAll('.fill').forEach(el => skillObserver.observe(el));
 
+  // ---------- Sertifikat lightbox ----------
+  const certCards = document.querySelectorAll('.cert-card');
+  const lightbox = document.getElementById('certLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  function openLightbox(src, alt){
+    lightboxImg.src = src;
+    lightboxImg.alt = alt;
+    lightbox.classList.add('open');
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightboxImg.src = '';
+  }
+
+  certCards.forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const img = card.querySelector('img');
+      openLightbox(card.dataset.cert, img ? img.alt : 'Sertifikat');
+    });
+    card.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        const img = card.querySelector('img');
+        openLightbox(card.dataset.cert, img ? img.alt : 'Sertifikat');
+      }
+    });
+  });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLightbox(); });
+
   // ---------- Contact form (front-end only) ----------
   const form = document.getElementById('contactForm');
   const formMsg = document.getElementById('formMsg');
@@ -81,3 +115,4 @@
     form.reset();
     setTimeout(()=> formMsg.textContent = "", 4000);
   });
+SS
